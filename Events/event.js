@@ -20,3 +20,5 @@ eventEmitter.emit('test')
 eventEmitter.emit('welcome','tanay')
 eventEmitter.emit('askPassword')
 eventEmitter.emit('askPassword')
+
+eventEmitter.listeners('test')
