@@ -1,5 +1,5 @@
 {
-  "name": "node-js",
+  "name": "js",
   "version": "1.0.0",
   "main": "first.js",
   "scripts": {
@@ -15,8 +15,10 @@
     "url": "https://github.com/pratiek2005/NodeJs/issues"
   },
   "homepage": "https://github.com/pratiek2005/NodeJs#readme",
-  "description": "",
   "dependencies": {
     "@types/node": "^25.5.0"
-  }
+  },
+  "devDependencies": {},
+  "keywords": [],
+  "description": ""
 }
