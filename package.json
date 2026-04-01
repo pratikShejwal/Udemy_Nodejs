@@ -16,9 +16,9 @@
   },
   "homepage": "https://github.com/pratiek2005/NodeJs#readme",
   "dependencies": {
-    "@types/node": "^25.5.0"
+    "@types/node": "^25.5.0",
+    "express": "^5.2.1"
   },
-  "devDependencies": {},
   "keywords": [],
   "description": ""
 }

@@ -2,8 +2,7 @@ const http = require('node:http')
 
 const server = http.createServer((req,res)=>{
     console.log(Date.now());
-    console.log(req.headers);
-
+    console.log(req.headers)
     //
     switch (req.url) {
 
