@@ -1,0 +1,4 @@
+import  add, {mul, sub} from './mathLib.js'
+console.log(add(2,3));
+console.log(sub(2,3));
+console.log(mul(2,3));
