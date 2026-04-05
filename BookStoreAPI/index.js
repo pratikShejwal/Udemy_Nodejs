@@ -1,3 +1,4 @@
+require('dotenv/config')
 const express = require('express')
 const bookrouter = require('./routes/book.routes')
 const {middleware} = require('./middlewares/customMiddleware')
