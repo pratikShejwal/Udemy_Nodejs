@@ -3,6 +3,7 @@ const booksTable = require('../models/book.model')
 const db = require('../db')
 const {eq, ilike} = require('drizzle-orm')
 const {sql} = require('drizzle-orm')
+const { authorsTable } = require('../models')
 exports.getAllBooks = async (req,res) => {
     const search = req.query.search
     if (search) {
@@ -20,7 +21,7 @@ exports.getAllBooks = async (req,res) => {
 
 exports.getBookById = async (req,res)=>{
     const id = req.params.id
-    const book = await db.select().from(booksTable).where((table)=>eq(table.id,id)).limit(1)
+    const book = await db.select().from(booksTable).where((table)=>eq(table.id,id)).leftJoin(authorsTable,eq(authorsTable.id,booksTable.id)).limit(1)
 
     if(!book){
         return res.status(404).json({error:'Book not found'})
