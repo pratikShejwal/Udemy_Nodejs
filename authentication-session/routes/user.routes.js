@@ -5,7 +5,33 @@ const router = express.Router()
 import {eq} from 'drizzle-orm'
 import {randomBytes,createHmac} from 'node:crypto'
 
-router.get('/')
+router.get('/',async(req,res)=>{
+    const sessionId = req.headers['session-id']
+
+    if (!sessionId) {
+        return res.status(401).json({error: 'not authorized'})
+    }
+
+    const [data] = await db.select(
+        {
+            id: userSessions.id,
+            userId: userSessions.userId,
+            name: usersTable.name,
+            email: usersTable.email
+        }
+    )
+    .from(userSessions)
+    .rightJoin(usersTable,eq(usersTable.id,userSessions.id))
+    .where((table)=>eq(table.id,sessionId))
+
+    if(!data){
+        return res.status(401).json({error: 'not authorized'})
+    }
+
+
+
+})
+
 router.post('/signup',async(req,res)=>{
     const {name,email,password} = req.body
     const [checkExistingUser] = await db
