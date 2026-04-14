@@ -40,7 +40,7 @@ router.get('/',async(req,res)=>{
     //     return res.status(401).json({error: 'not authorized'})
     // }
 
-
+    return res.status(200).json({message :'running fine'})
 
 })
 
@@ -102,7 +102,7 @@ router.post('/login',async(req,res)=>{
       const payload = {
         id:existingUser.id,
         email:existingUser.email,
-        name:existingUser.names
+        name:existingUser.name
       }
 
       const token = jwt.sign(payload,process.env.JWT_SECRET)
