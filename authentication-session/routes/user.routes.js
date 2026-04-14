@@ -5,28 +5,40 @@ const router = express.Router()
 import {eq} from 'drizzle-orm'
 import {randomBytes,createHmac} from 'node:crypto'
 
+
+import jwt from 'jsonwebtoken'
+
+router.patch('/update',async(req,res)=>{
+    const {name} = req.body;
+
+    const user = req.user;
+    await db.update(usersTable).set({name}).where(eq(usersTable.id,user.id))
+    return
+})
+
+
 router.get('/',async(req,res)=>{
-    const sessionId = req.headers['session-id']
+    // const sessionId = req.headers['session-id']
 
-    if (!sessionId) {
-        return res.status(401).json({error: 'not authorized'})
-    }
+    // if (!sessionId) {
+    //     return res.status(401).json({error: 'not authorized'})
+    // }
 
-    const [data] = await db.select(
-        {
-            id: userSessions.id,
-            userId: userSessions.userId,
-            name: usersTable.name,
-            email: usersTable.email
-        }
-    )
-    .from(userSessions)
-    .rightJoin(usersTable,eq(usersTable.id,userSessions.id))
-    .where((table)=>eq(table.id,sessionId))
+    // const [data] = await db.select(
+    //     {
+    //         id: userSessions.id,
+    //         userId: userSessions.userId,
+    //         name: usersTable.name,
+    //         email: usersTable.email
+    //     }
+    // )
+    // .from(userSessions)
+    // .rightJoin(usersTable,eq(usersTable.id,userSessions.id))
+    // .where((table)=>eq(table.id,sessionId))
 
-    if(!data){
-        return res.status(401).json({error: 'not authorized'})
-    }
+    // if(!data){
+    //     return res.status(401).json({error: 'not authorized'})
+    // }
 
 
 
@@ -64,6 +76,7 @@ router.post('/login',async(req,res)=>{
     const [existingUser] = await db
     .select({
         id: usersTable.id,
+        name: usersTable.name,
         email: usersTable.email,
         salt: usersTable.salt,
         password: usersTable.password
@@ -86,12 +99,19 @@ router.post('/login',async(req,res)=>{
         return res.status(400).json({error : "incorrect password"})
     }
 
-      
-        const [session] = await db.insert(userSessions).values({
-        userId: existingUser.id
-}).returning({id: userSessions.id})
+      const payload = {
+        id:existingUser.id,
+        email:existingUser.email,
+        name:existingUser.names
+      }
 
-  return res.json({message: 'login successfully',sessionId: session.id})
+      const token = jwt.sign(payload,process.env.JWT_SECRET)
+
+//         const [session] = await db.insert(userSessions).values({
+//         userId: existingUser.id
+// }).returning({id: userSessions.id})
+
+  return res.json({message: 'login successfully',token})
 
 
 })
