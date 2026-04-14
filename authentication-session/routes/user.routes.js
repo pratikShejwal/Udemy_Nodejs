@@ -4,8 +4,6 @@ import { usersTable,userSessions } from '../db/schema.js'
 const router = express.Router()
 import {eq} from 'drizzle-orm'
 import {randomBytes,createHmac} from 'node:crypto'
-
-
 import jwt from 'jsonwebtoken'
 
 router.patch('/update',async(req,res)=>{
@@ -78,6 +76,7 @@ router.post('/login',async(req,res)=>{
         id: usersTable.id,
         name: usersTable.name,
         email: usersTable.email,
+        role:usersTable.role,
         salt: usersTable.salt,
         password: usersTable.password
     })
@@ -102,7 +101,8 @@ router.post('/login',async(req,res)=>{
       const payload = {
         id:existingUser.id,
         email:existingUser.email,
-        name:existingUser.name
+        name:existingUser.name,
+        role:existingUser.role
       }
 
       const token = jwt.sign(payload,process.env.JWT_SECRET)
